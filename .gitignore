@@ -1,0 +1,50 @@
+# ─── Secrets & local config ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.recovery
+TWILIO_RECOVERY_CODE.txt
+
+# ─── Dependencies ────────────────────────────────────────────────
+node_modules/
+
+# ─── Vercel ──────────────────────────────────────────────────────
+.vercel/
+
+# ─── Build / generated ───────────────────────────────────────────
+dist/
+build/
+.next/
+.turbo/
+
+# ─── Logs ────────────────────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── Media (do not commit raw demo footage) ──────────────────────
+*.mp4
+*.mov
+*.avi
+
+# ─── Prospect data / PII (keep local only) ───────────────────────
+florida-medspas-MASTER.csv
+florida-medspas-TRACKER.csv
+Florida_MedSpa_Contacts.csv
+codeket-prospect-list-v2.xlsx
+Bishir.png
+
+# ─── Local agent tooling (not project code) ──────────────────────
+.claude/
+
+# ─── OS / editor junk ────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+.~lock.*#

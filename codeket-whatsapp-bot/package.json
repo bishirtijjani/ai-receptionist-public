@@ -1,0 +1,23 @@
+{
+  "name": "codeket-whatsapp-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp AI Receptionist for med spas by Codeket",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "test": "node test/simulate.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "@supabase/supabase-js": "^2.43.0",
+    "twilio": "^5.2.0",
+    "nodemailer": "^6.9.13",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  }
+}

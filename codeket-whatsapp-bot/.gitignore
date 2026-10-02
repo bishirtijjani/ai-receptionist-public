@@ -1,0 +1,39 @@
+# Secrets and local config
+.env
+.env.local
+.env.*.local
+TWILIO_RECOVERY_CODE.txt
+*.recovery
+*.key
+*.pem
+
+# Dependencies
+node_modules/
+
+# Vercel
+.vercel
+
+# Build / generated
+dist/
+build/
+.next/
+.turbo/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Media files (do not commit raw demo footage)
+*.mp4
+*.mov
+*.avi

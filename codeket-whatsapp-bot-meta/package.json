@@ -1,0 +1,21 @@
+{
+  "name": "codeket-whatsapp-bot-meta",
+  "version": "1.0.0",
+  "description": "Codeket's own WhatsApp AI receptionist demo bot — WhatsApp Cloud API (Meta) transport.",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "dev": "vercel dev",
+    "seed": "node scripts/seed-demo-spa.js",
+    "test": "node test/simulate.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.24.0",
+    "@supabase/supabase-js": "^2.43.0",
+    "nodemailer": "^6.9.13",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  }
+}
