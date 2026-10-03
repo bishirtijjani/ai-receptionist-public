@@ -1,6 +1,10 @@
 -- ─────────────────────────────────────────────────────────────
--- Codeket WhatsApp Bot — Supabase Schema
--- Run this in the Supabase SQL editor to initialise the database.
+-- Codeket WhatsApp Bot — PostgreSQL schema (self-hosted)
+-- Run once against the target database, e.g.:
+--   psql "postgresql://user:pass@host:5432/ai_receptionist" -f db/schema.sql
+--
+-- This is the final schema after the multi-channel (Instagram) migration:
+-- conversations are keyed by (spa_id, phone, channel).
 -- ─────────────────────────────────────────────────────────────
 
 -- Spa configurations (one row per client spa)
@@ -13,18 +17,20 @@ create table if not exists spa_configs (
   updated_at  timestamptz not null default now()
 );
 
--- Active conversations (one per phone number per spa)
+-- Active conversations (one per contact + channel per spa)
 create table if not exists conversations (
   id          uuid primary key default gen_random_uuid(),
   spa_id      text not null references spa_configs(id),
-  phone       text not null,                   -- E.164 format, e.g. "+14155551234"
+  phone       text not null,                   -- E.164 phone (WhatsApp) or IGSID (Instagram)
+  channel     text not null default 'whatsapp' check (channel in ('whatsapp', 'instagram')),
   status      text not null default 'active',  -- active | handed_off | closed
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now(),
-  unique(spa_id, phone)
+  unique(spa_id, phone, channel)
 );
 
-create index if not exists conversations_phone_spa on conversations(phone, spa_id);
+create index if not exists conversations_contact_channel
+  on conversations(spa_id, phone, channel);
 
 -- Individual messages (full history per conversation)
 create table if not exists messages (
@@ -63,9 +69,3 @@ create table if not exists bookings (
   status          text not null default 'pending' check (status in ('pending', 'confirmed', 'cancelled')),
   created_at      timestamptz not null default now()
 );
-
--- ─── Seed demo spa ───────────────────────────────────────────────
--- After running this schema, also run:
---   node scripts/seed-demo-spa.js
--- to insert the Glow Aesthetic Spa config.
--- ─────────────────────────────────────────────────────────────────

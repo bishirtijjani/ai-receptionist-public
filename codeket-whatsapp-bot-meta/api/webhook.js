@@ -35,7 +35,7 @@ import {
   getOrCreateConversation,
   getHistory,
   saveMessage,
-} from "../lib/supabase.js";
+} from "../lib/db.js";
 import { handleHandoff } from "../lib/handoff.js";
 import { glowSpaConfig } from "../demo/glow-spa-config.js";
 

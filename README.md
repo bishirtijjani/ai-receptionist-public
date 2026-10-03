@@ -5,7 +5,10 @@ price questions, proposes booking slots, collects intake info, and hands off to
 a human for anything medical, complaint-related, or off-script. Configured
 per client with hard-locked prices so the bot can't invent information.
 
-**Stack:** Claude (Anthropic) + Supabase + Vercel + WhatsApp transport
+**Stack:** Claude (Anthropic) + PostgreSQL + Node/Express + WhatsApp transport
+
+> `codeket-whatsapp-bot-meta` is **self-hosted** (standalone Node server + PostgreSQL).
+> `codeket-whatsapp-bot` (Twilio) still uses the original Vercel + Supabase setup.
 
 ---
 
@@ -26,6 +29,7 @@ scripting, and campaign planning.
 |---|---|---|
 | Transport | Twilio WhatsApp | Meta WhatsApp Cloud API |
 | Purpose | Paid client deployments | Codeket's own demo |
+| Runtime | Vercel serverless + Supabase | Self-hosted Node + PostgreSQL |
 | Setup | `README.md` | `SETUP-META.md` |
 
 The two share the same core (`lib/anthropic.js`, `lib/system-prompt.js`,
@@ -37,17 +41,16 @@ transport layer.
 ## Quick start (per bot)
 
 ```bash
-cd codeket-whatsapp-bot         # or codeket-whatsapp-bot-meta
+cd codeket-whatsapp-bot-meta    # self-hosted variant
 npm install
 cp .env.example .env            # fill in real values
-# run supabase/schema.sql in the Supabase SQL editor
-node scripts/seed-demo-spa.js   # seed the Glow Aesthetic Spa demo config
+psql "$DATABASE_URL" -f db/schema.sql
+npm run seed                    # seed the Glow Aesthetic Spa demo config
 node test/simulate.js           # terminal chat simulator, no transport needed
+npm start                       # /health, /webhook, /instagram-webhook
 ```
 
-Deploy to Vercel with `vercel --prod`, then point the WhatsApp webhook at
-`https://<your-url>/webhook`. Full instructions live in each bot's README /
-`SETUP-META.md`.
+Full instructions live in each bot's README / `SETUP-META.md`.
 
 ---
 

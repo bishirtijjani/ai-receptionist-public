@@ -32,7 +32,8 @@ codeket_verify_6fd7674031b253dff2ba391306eea310
 - **A real phone number you control** that is **NOT currently on any WhatsApp account**
   (personal or Business app). If it is, delete that WhatsApp account first, or use a fresh
   number (a cheap eSIM / second SIM / VoIP that can receive SMS or a call works).
-- This repo deployed to Vercel (you need the live `/webhook` URL before the webhook step).
+- The bot deployed and reachable over HTTPS (you need the live `/webhook` URL before the
+  webhook step). See the README for the self-hosted Node + PostgreSQL setup.
 
 ---
 
@@ -72,25 +73,26 @@ production. Make a permanent one:
 2. Next to **App Secret**, click **Show** (re-enter your FB password).
 3. Copy it -> this is `WHATSAPP_APP_SECRET`.
 
-## Step 5 — Fill `.env` and deploy
+## Step 5 — Fill `.env` and start the server
 
-1. `cp .env.example .env` and fill the 5 WhatsApp values above + Anthropic/Supabase/SMTP.
-2. Make sure the Supabase schema is loaded and the demo spa is seeded:
+1. `cp .env.example .env` and fill the WhatsApp values above + `DATABASE_URL`,
+   `ANTHROPIC_API_KEY`, and SMTP.
+2. Initialise the database (once):
    ```bash
+   psql "$DATABASE_URL" -f db/schema.sql
    npm install
-   npm run seed          # seeds the "glow" spa row (safe to reuse the existing Supabase project)
+   npm run seed          # seeds the "glow" spa row
    ```
-3. Add every `.env` key to Vercel (Dashboard > Project > Settings > Environment Variables),
-   set `NODE_ENV=production`, then:
+3. Start the server (sets `NODE_ENV=production` so signatures are enforced):
    ```bash
-   vercel --prod
+   npm start             # node server.js, listens on PORT (default 3000)
    ```
-   Note your webhook URL: `https://<your-vercel-url>/webhook`
+   Your webhook URL is `https://<your-domain>/webhook` (and `/instagram-webhook`).
 
 ## Step 6 — Wire the webhook in Meta
 
 1. App > **WhatsApp** > **Configuration** > **Webhook** > **Edit**.
-2. **Callback URL:** `https://<your-vercel-url>/webhook`
+2. **Callback URL:** `https://<your-domain>/webhook`
 3. **Verify token:** `codeket_verify_6fd7674031b253dff2ba391306eea310`
 4. Click **Verify and save**. (Meta sends a GET to your webhook; the bot answers the challenge.)
 5. Under **Webhook fields**, **Subscribe** to **`messages`**.
@@ -99,14 +101,15 @@ production. Make a permanent one:
 
 1. From your phone, send a WhatsApp message **to your registered business number**.
 2. The bot should reply within a couple seconds as the Glow Aesthetic Spa receptionist.
-3. No reply? Check **Vercel > Deployments > Functions > api/webhook** logs.
+3. No reply? Check the server logs (`docker compose logs -f ai-receptionist`, or the
+   `npm start` terminal).
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | Webhook "Verify and save" fails | Verify token mismatch, or not deployed | Confirm the token matches exactly; confirm `/webhook` is live |
 | Message sends but no reply | Not subscribed to `messages`, or bad token | Subscribe to `messages`; regenerate the system-user token |
 | 401/190 from Graph API | Token expired or wrong scopes | Make a permanent token with both whatsapp scopes (Step 3) |
-| Reply works in dev but 403 in prod | Signature check failing | Confirm `WHATSAPP_APP_SECRET` is set in Vercel |
+| Reply works in dev but 403 in prod | Signature check failing | Confirm `WHATSAPP_APP_SECRET` is set on the server |
 
 ---
 

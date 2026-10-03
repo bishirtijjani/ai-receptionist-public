@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { logHandoff, markHandoffNotified, markHandedOff } from "./supabase.js";
+import { logHandoff, markHandoffNotified, markHandedOff } from "./db.js";
 
 /**
  * Handle a HANDOFF_HUMAN signal from the LLM.

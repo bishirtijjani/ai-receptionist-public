@@ -4,7 +4,7 @@ import crypto from "crypto";
  * Instagram Messaging (Meta Graph API) helper.
  *
  * Counterpart to lib/twilio.js, but for Instagram DMs. The bot core
- * (anthropic.js + supabase.js + handoff.js) is channel-agnostic; this module
+ * (anthropic.js + db.js + handoff.js) is channel-agnostic; this module
  * only handles the Instagram-specific transport: webhook verification,
  * signature validation, inbound event parsing, and sending replies.
  *
