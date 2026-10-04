@@ -139,6 +139,20 @@ Conversations are stored **one row per session**: when a handed-off contact
 messages again, a new session begins instead of wiping the previous transcript,
 so all history is retained.
 
+### Backfilling identity for older conversations
+
+Conversations created before identity capture have no name. Instagram can be
+backfilled (the IGSID was already stored, and the User Profile API resolves it):
+
+```bash
+npm run backfill:identities
+```
+
+WhatsApp **cannot** be backfilled — Meta only delivers the profile name inside
+an inbound message payload, with no lookup-by-number endpoint. Those contacts
+show their number until they message again, at which point the name is captured
+automatically.
+
 ---
 
 ## Onboarding a new client (production)

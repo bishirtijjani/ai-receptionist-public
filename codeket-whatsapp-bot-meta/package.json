@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node server.js",
     "seed": "node scripts/seed-demo-spa.js",
+    "backfill:identities": "node scripts/backfill-identities.js",
     "test": "node test/simulate.js"
   },
   "dependencies": {
