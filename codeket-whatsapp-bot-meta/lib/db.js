@@ -18,6 +18,14 @@ function getPool() {
   return pool;
 }
 
+/**
+ * Run a query against the shared pool. Exposed for read-only admin/dashboard
+ * queries (see lib/admin-queries.js).
+ */
+export function query(text, params) {
+  return getPool().query(text, params);
+}
+
 // ─── Spa config ──────────────────────────────────────────────────
 
 /**
@@ -47,46 +55,71 @@ export async function getSpaConfig(spaId) {
  *                              Instagram: Instagram-scoped user id (IGSID).
  *                              Stored in the `phone` column for both channels.
  * @param {string} [channel]  - "whatsapp" (default) | "instagram"
+ * @param {object} [identity] - optional { display_name, username, profile_pic }
+ *                              seeded on a freshly created session.
  * @returns the conversation row.
  */
-export async function getOrCreateConversation(spaId, contactId, channel = "whatsapp") {
+export async function getOrCreateConversation(
+  spaId,
+  contactId,
+  channel = "whatsapp",
+  identity = {}
+) {
   const db = getPool();
 
-  // 1. Resume if an active conversation already exists
+  // 1. Resume the latest active session for this contact+channel, if any.
   const active = await db.query(
     `select * from conversations
      where spa_id = $1 and phone = $2 and channel = $3 and status = 'active'
+     order by created_at desc
      limit 1`,
     [spaId, contactId, channel]
   );
   if (active.rows.length > 0) return active.rows[0];
 
-  // 2. If a handed_off conversation exists, reset it and wipe old messages
-  //    (unique constraint means one row per spa+contact+channel)
-  const stale = await db.query(
-    `select * from conversations
-     where spa_id = $1 and phone = $2 and channel = $3
-     limit 1`,
-    [spaId, contactId, channel]
-  );
-  if (stale.rows.length > 0) {
-    const id = stale.rows[0].id;
-    await db.query("delete from messages where conversation_id = $1", [id]);
-    const reset = await db.query(
-      `update conversations set status = 'active', updated_at = now()
-       where id = $1 returning *`,
-      [id]
-    );
-    return reset.rows[0];
-  }
+  // 2. No active session — start a NEW one. Previous (handed_off/closed)
+  //    sessions and their transcripts are preserved as history.
+  const {
+    display_name = null,
+    username = null,
+    profile_pic = null,
+  } = identity ?? {};
 
-  // 3. No conversation at all — create fresh
   const created = await db.query(
-    `insert into conversations (spa_id, phone, channel, status)
-     values ($1, $2, $3, 'active') returning *`,
-    [spaId, contactId, channel]
+    `insert into conversations
+       (spa_id, phone, channel, status, display_name, username, profile_pic, last_message_at)
+     values ($1, $2, $3, 'active', $4, $5, $6, now())
+     returning *`,
+    [spaId, contactId, channel, display_name, username, profile_pic]
   );
   return created.rows[0];
+}
+
+/**
+ * Update a conversation's contact identity and stamp activity.
+ * Null/undefined identity fields are left unchanged (coalesce), so it is safe
+ * to call on every inbound message even when no new profile data is available.
+ *
+ * @param {string} conversationId
+ * @param {{display_name?:string, username?:string, profile_pic?:string}} identity
+ */
+export async function updateConversationIdentity(conversationId, identity = {}) {
+  const {
+    display_name = null,
+    username = null,
+    profile_pic = null,
+  } = identity ?? {};
+
+  await getPool().query(
+    `update conversations
+        set display_name    = coalesce($2, display_name),
+            username        = coalesce($3, username),
+            profile_pic      = coalesce($4, profile_pic),
+            last_message_at  = now(),
+            updated_at       = now()
+      where id = $1`,
+    [conversationId, display_name, username, profile_pic]
+  );
 }
 
 /**

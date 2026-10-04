@@ -21,6 +21,7 @@ import {
   validateSignature,
   parseInstagramWebhook,
   sendInstagramMessage,
+  getInstagramProfile,
 } from "../lib/instagram.js";
 import { getReply } from "../lib/anthropic.js";
 import {
@@ -28,6 +29,7 @@ import {
   getOrCreateConversation,
   getHistory,
   saveMessage,
+  updateConversationIdentity,
 } from "../lib/db.js";
 import { handleHandoff } from "../lib/handoff.js";
 import { glowSpaConfig } from "../demo/glow-spa-config.js";
@@ -90,6 +92,22 @@ export default async function handler(req, res) {
 
       await saveMessage(conversation.id, "user", m.text);
       await saveMessage(conversation.id, "assistant", reply);
+
+      // Record who this DM is from. Instagram only sends an opaque IGSID, so
+      // resolve @username/name via the User Profile API (cached on the row).
+      let identity = null;
+      if (!conversation.username) {
+        const profile = await getInstagramProfile(m.senderId);
+        if (profile) {
+          identity = {
+            display_name: profile.name,
+            username: profile.username,
+            profile_pic: profile.profile_pic,
+          };
+          console.log(`[ig-webhook] profile ${m.senderId} -> @${profile.username ?? "?"}`);
+        }
+      }
+      await updateConversationIdentity(conversation.id, identity);
 
       if (handoff) {
         await handleHandoff({

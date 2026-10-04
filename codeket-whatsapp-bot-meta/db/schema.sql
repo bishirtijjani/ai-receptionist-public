@@ -3,8 +3,9 @@
 -- Run once against the target database, e.g.:
 --   psql "postgresql://user:pass@host:5432/ai_receptionist" -f db/schema.sql
 --
--- This is the final schema after the multi-channel (Instagram) migration:
--- conversations are keyed by (spa_id, phone, channel).
+-- This is the final schema after the multi-channel (Instagram) migration and
+-- migration 001 (sender identity + session-preserving history):
+-- conversations are one row per (spa_id, phone, channel) SESSION.
 -- ─────────────────────────────────────────────────────────────
 
 -- Spa configurations (one row per client spa)
@@ -17,20 +18,24 @@ create table if not exists spa_configs (
   updated_at  timestamptz not null default now()
 );
 
--- Active conversations (one per contact + channel per spa)
+-- Conversations — one row per contact session (a returning contact starts a
+-- new row instead of overwriting history).
 create table if not exists conversations (
-  id          uuid primary key default gen_random_uuid(),
-  spa_id      text not null references spa_configs(id),
-  phone       text not null,                   -- E.164 phone (WhatsApp) or IGSID (Instagram)
-  channel     text not null default 'whatsapp' check (channel in ('whatsapp', 'instagram')),
-  status      text not null default 'active',  -- active | handed_off | closed
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now(),
-  unique(spa_id, phone, channel)
+  id              uuid primary key default gen_random_uuid(),
+  spa_id          text not null references spa_configs(id),
+  phone           text not null,               -- E.164 phone (WhatsApp) or IGSID (Instagram)
+  channel         text not null default 'whatsapp' check (channel in ('whatsapp', 'instagram')),
+  status          text not null default 'active', -- active | handed_off | closed
+  display_name    text,                        -- contact's profile name (WhatsApp / Instagram)
+  username        text,                        -- Instagram @username (null for WhatsApp)
+  profile_pic     text,                        -- profile picture URL (expires in ~days)
+  last_message_at timestamptz,
+  created_at      timestamptz not null default now(),
+  updated_at      timestamptz not null default now()
 );
 
-create index if not exists conversations_contact_channel
-  on conversations(spa_id, phone, channel);
+create index if not exists conversations_contact_recent
+  on conversations(spa_id, phone, channel, created_at desc);
 
 -- Individual messages (full history per conversation)
 create table if not exists messages (

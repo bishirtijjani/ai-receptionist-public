@@ -94,6 +94,46 @@ export function parseInstagramWebhook(body) {
 }
 
 /**
+ * Look up an Instagram user's profile from their IGSID via the User Profile API.
+ * Consent is granted when the user messages the professional account, so this
+ * works for anyone who has DM'd us.
+ *
+ * Docs: https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/messaging-api/user-profile/
+ * All endpoints are on graph.instagram.com for the Instagram Login flow.
+ *
+ * Never throws — returns null on any failure so webhook processing continues.
+ *
+ * @param {string} igsid - Instagram-scoped user id from the webhook sender.id
+ * @returns {Promise<{name: string|null, username: string|null, profile_pic: string|null}|null>}
+ */
+export async function getInstagramProfile(igsid) {
+  const token = process.env.IG_ACCESS_TOKEN;
+  if (!token || !igsid) return null;
+
+  const url =
+    `https://graph.instagram.com/${GRAPH_VERSION}/${encodeURIComponent(igsid)}` +
+    `?fields=name,username,profile_pic&access_token=${encodeURIComponent(token)}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      console.warn(`[instagram] profile lookup failed (${res.status}): ${detail}`);
+      return null;
+    }
+    const data = await res.json().catch(() => ({}));
+    return {
+      name: data.name ?? null,
+      username: data.username ?? null,
+      profile_pic: data.profile_pic ?? null,
+    };
+  } catch (err) {
+    console.warn("[instagram] profile lookup error:", err.message);
+    return null;
+  }
+}
+
+/**
  * Send a text reply to an Instagram user via the Instagram Send API.
  *
  * @param {string} recipientId - the IGSID of the user to reply to

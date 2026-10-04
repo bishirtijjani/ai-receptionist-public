@@ -35,6 +35,7 @@ import {
   getOrCreateConversation,
   getHistory,
   saveMessage,
+  updateConversationIdentity,
 } from "../lib/db.js";
 import { handleHandoff } from "../lib/handoff.js";
 import { glowSpaConfig } from "../demo/glow-spa-config.js";
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ ok: true });
   }
 
-  const { from, body: customerMessage } = message;
+  const { from, body: customerMessage, profileName } = message;
   console.log(`[webhook] ${from}: ${customerMessage}`);
 
   try {
@@ -93,7 +94,13 @@ export default async function handler(req, res) {
     const spaConfig = spaId === "glow" ? glowSpaConfig : await getSpaConfig(spaId);
 
     // ── Conversation state ──────────────────────────────────────
-    const conversation = await getOrCreateConversation(spaId, normalizePhone(from));
+    const identity = { display_name: profileName || null };
+    const conversation = await getOrCreateConversation(
+      spaId,
+      normalizePhone(from),
+      "whatsapp",
+      identity
+    );
     const history = await getHistory(conversation.id, 20);
 
     // ── LLM call ────────────────────────────────────────────────
@@ -102,6 +109,9 @@ export default async function handler(req, res) {
     // ── Persist messages ────────────────────────────────────────
     await saveMessage(conversation.id, "user", customerMessage);
     await saveMessage(conversation.id, "assistant", reply);
+
+    // Record who this DM is from (WhatsApp profile name) + activity time.
+    await updateConversationIdentity(conversation.id, identity);
 
     // ── Handoff ─────────────────────────────────────────────────
     if (handoff) {

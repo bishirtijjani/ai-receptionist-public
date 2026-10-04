@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Receptionist — Monitor</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>AI Receptionist</h1>
+      <span class="sub">live monitor</span>
+    </div>
+    <div class="topbar-right">
+      <label class="auto">
+        <input type="checkbox" id="autoRefresh" checked />
+        Auto-refresh
+      </label>
+      <span id="updated" class="updated"></span>
+    </div>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <nav class="tabs">
+    <button class="tab active" data-view="inbox">Inbox</button>
+    <button class="tab" data-view="handoffs">Handoffs</button>
+    <button class="tab" data-view="bookings">Bookings</button>
+  </nav>
+
+  <!-- ── Inbox ─────────────────────────────────────────────── -->
+  <main class="view" id="view-inbox">
+    <div class="toolbar">
+      <select id="filterChannel">
+        <option value="">All channels</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="instagram">Instagram</option>
+      </select>
+      <select id="filterStatus">
+        <option value="">All statuses</option>
+        <option value="active">Active</option>
+        <option value="handed_off">Handed off</option>
+        <option value="closed">Closed</option>
+      </select>
+      <input type="search" id="search" placeholder="Search name, @username or number…" />
+    </div>
+
+    <div class="split">
+      <ul class="conv-list" id="convList"></ul>
+      <section class="detail" id="detail">
+        <div class="empty">Select a conversation to view the transcript.</div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ── Handoffs ──────────────────────────────────────────── -->
+  <main class="view hidden" id="view-handoffs">
+    <table class="data-table" id="handoffsTable">
+      <thead>
+        <tr>
+          <th>When</th><th>Contact</th><th>Channel</th><th>Reason</th>
+          <th>Urgency</th><th>Notified</th><th>Resolved</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <!-- ── Bookings ──────────────────────────────────────────── -->
+  <main class="view hidden" id="view-bookings">
+    <table class="data-table" id="bookingsTable">
+      <thead>
+        <tr>
+          <th>When</th><th>Contact</th><th>Channel</th><th>Service</th>
+          <th>Client</th><th>Slot</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

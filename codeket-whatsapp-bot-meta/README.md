@@ -27,10 +27,15 @@ lib/
   instagram.js          — Send + parse + verify Instagram DMs
   calendly.js           — Available slots + scheduling link creation
   handoff.js            — Human handoff email alert + DB logging
+  admin-queries.js      — Read-only SQL for the monitoring dashboard
+admin/
+  index.html            — Monitoring dashboard UI (Basic Auth protected)
+  app.js / style.css    — Dashboard frontend (vanilla JS, no build step)
 demo/
   glow-spa-config.js    — Demo spa config (Glow Aesthetic Spa, Austin TX)
 db/
-  schema.sql            — DB schema (run once with psql)
+  schema.sql            — DB schema (run once with psql, fresh installs)
+  migrations/           — Idempotent ALTERs for existing databases
 scripts/
   seed-demo-spa.js      — Seeds the Glow Aesthetic Spa config
 test/
@@ -67,11 +72,19 @@ cp .env.example .env
 | `HANDOFF_EMAIL_TO` | Your email (alerts go here) |
 | `SMTP_*` | Any SMTP. Gmail: enable App Passwords, use `smtp.gmail.com:587` |
 | `SPA_ID` | `glow` for demo, or the spa's ID in `spa_configs` |
+| `ADMIN_USER` / `ADMIN_PASSWORD` | Login for the `/admin` monitoring dashboard |
 
 ### 3. Create the schema
 
 ```bash
 psql "$DATABASE_URL" -f db/schema.sql
+```
+
+Existing databases (created before sender-identity/history support) run the
+idempotent migration instead:
+
+```bash
+psql "$DATABASE_URL" -f db/migrations/001-identity-and-sessions.sql
 ```
 
 ### 4. Seed the demo spa config
@@ -103,6 +116,28 @@ auto-deploys from GitHub via the webhook system. See the server README for the r
 Webhook URLs:
 - WhatsApp: `https://ai-receptionist.codeket.com/webhook`
 - Instagram: `https://ai-receptionist.codeket.com/instagram-webhook`
+
+---
+
+## Monitoring dashboard
+
+A read-only dashboard lives at `/admin` (Basic Auth, credentials from
+`ADMIN_USER`/`ADMIN_PASSWORD`). It shows:
+
+- **Stats** — conversations, unique contacts, active/handed-off counts,
+  messages in the last 24h, open handoffs, bookings, channel split.
+- **Inbox** — every conversation session with the sender's name / `@username`
+  (WhatsApp profile name, Instagram via the User Profile API), channel, status,
+  last message and full transcript. Filter by channel/status and search.
+- **Handoffs** — all human-handoff events with reason, urgency and status.
+- **Bookings** — captured bookings with client + slot details.
+
+JSON endpoints behind the same auth: `/admin/api/stats`, `/admin/api/conversations`,
+`/admin/api/conversations/:id`, `/admin/api/handoffs`, `/admin/api/bookings`.
+
+Conversations are stored **one row per session**: when a handed-off contact
+messages again, a new session begins instead of wiping the previous transcript,
+so all history is retained.
 
 ---
 
