@@ -6,7 +6,7 @@
 
 **One-liner:** WhatsApp AI Receptionist that books appointments, answers inquiries 24/7, and hands off to humans — built specifically for med spas.
 
-**What it does:** Codeket's WhatsApp AI Receptionist connects to a med spa's WhatsApp Business number and acts as an always-on receptionist. It answers questions about services and prices, proposes available booking slots, collects intake info for new clients, and escalates to a human when needed (medical questions, complaints, discount requests). Configured per-client with hard-locked prices and policies — it cannot invent information.
+**What it does:** AI Receptionist's WhatsApp AI Receptionist connects to a med spa's WhatsApp Business number and acts as an always-on receptionist. It answers questions about services and prices, proposes available booking slots, collects intake info for new clients, and escalates to a human when needed (medical questions, complaints, discount requests). Configured per-client with hard-locked prices and policies — it cannot invent information.
 
 **Product category:** AI automation / AI receptionist / conversational AI for service businesses
 
@@ -96,9 +96,9 @@
 - Med-spa-specific: trained on treatments, prices, objections, booking flows — not a generic bot
 - Hard-locked pricing: bot cannot invent prices or policies (the #1 objection is "what if it gives wrong prices")
 - Human handoff built in: medical questions, complaints, and discount requests always escalate — HIPAA-aware
-- 14-day delivery, white-glove: client gives services + prices + booking access, Codeket does the rest
+- 14-day delivery, white-glove: client gives services + prices + booking access, AI Receptionist does the rest
 - 4-day approval mode before go-live: owner sees every reply the bot would have sent before it's live
-- Codeket founder (Bishir) is the direct point of contact — no sales team, no offshore delegation
+- AI Receptionist founder (Bishir) is the direct point of contact — no sales team, no offshore delegation
 
 **How we do it differently:** Per-client configuration at runtime. Every client's system prompt is their own services, prices, policies, and team — the bot literally cannot say anything that isn't in the config.
 
@@ -118,7 +118,7 @@
 | "What if it gives wrong prices?" | Prices are hard-locked. Bot can't make them up. And you approve every reply for 4 days before it goes live. |
 | "Why $1,497?" | Pays for itself with 5 recovered bookings at $300 each. After that, every recovered booking is pure margin against $297/mo. |
 | "I'd rather hire a receptionist" | Part-time evening receptionist in most US cities: $1,200-2,000/mo. Bot: $297, never sleeps, zero turnover, covers every channel. |
-| "Where are you based?" | Codeket is Nigeria-based. I run client hours during your business day and bill in USD via Wise. You talk to me directly. |
+| "Where are you based?" | AI Receptionist is Nigeria-based. I run client hours during your business day and bill in USD via Wise. You talk to me directly. |
 
 **Anti-persona:**
 - Multi-location groups (5+ sites) — have IT departments, long sales cycles, procurement
@@ -186,7 +186,7 @@ Bot giving wrong prices. Customers reacting badly. HIPAA exposure. What happens 
 - "After-hours inquiries: bot replies in seconds vs. 12+ hours for manual"
 - API costs at launch: ~$3-7/mo per client. Margin: ~97% on retainer.
 
-**Current proof:** Demo bot live (Glow Aesthetic Spa, Austin TX). Founder's Pilot — 3 free case study slots in exchange for public metrics and testimonial.
+**Current proof:** Demo bot live (Example Spa, Austin TX). Founder's Pilot — 3 free case study slots in exchange for public metrics and testimonial.
 
 **Value themes:**
 | Theme | Proof |

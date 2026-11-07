@@ -1,4 +1,4 @@
-# Codeket WhatsApp AI Receptionist
+# AI Receptionist WhatsApp AI Receptionist
 
 WhatsApp bot for med spas. Answers inquiries, books appointments, hands off to humans when needed.
 
@@ -18,11 +18,11 @@ lib/
   calendly.js           — Available slots + scheduling link creation
   handoff.js            — Human handoff email alert + DB logging
 demo/
-  glow-spa-config.js    — Demo spa config (Glow Aesthetic Spa, Austin TX)
+  example-spa-spa-config.js    — Demo spa config (Example Spa, Austin TX)
 supabase/
   schema.sql            — DB schema (run once in Supabase SQL editor)
 scripts/
-  seed-demo-spa.js      — Seeds Glow Aesthetic Spa config into Supabase
+  seed-demo-spa.js      — Seeds Example Spa config into Supabase
 test/
   simulate.js           — Terminal chat simulator (no Twilio needed)
 ```
@@ -34,8 +34,8 @@ test/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-org/codeket-whatsapp-bot
-cd codeket-whatsapp-bot
+git clone https://github.com/your-org/ai-receptionist-whatsapp-bot
+cd ai-receptionist-whatsapp-bot
 npm install
 ```
 
@@ -58,7 +58,7 @@ Fill in `.env`:
 | `CALENDLY_API_TOKEN` | calendly.com/integrations/api_webhooks |
 | `HANDOFF_EMAIL_TO` | Your email (alerts go here) |
 | `SMTP_*` | Any SMTP. Gmail: enable App Passwords, use `smtp.gmail.com:587` |
-| `SPA_ID` | `glow` for demo, or your spa's ID in Supabase |
+| `SPA_ID` | `example-spa` for demo, or your spa's ID in Supabase |
 
 ### 3. Create Supabase schema
 
@@ -78,7 +78,7 @@ node scripts/seed-demo-spa.js
 node test/simulate.js
 ```
 
-Type messages as the customer. You should see the bot reply as the Glow Aesthetic Spa receptionist.
+Type messages as the customer. You should see the bot reply as the Example Spa receptionist.
 
 ---
 
@@ -90,9 +90,9 @@ vercel login
 vercel --prod
 ```
 
-Vercel will give you a URL like `https://codeket-whatsapp-bot.vercel.app`.
+Vercel will give you a URL like `https://ai-receptionist-whatsapp-bot.vercel.app`.
 
-Your webhook URL is: `https://codeket-whatsapp-bot.vercel.app/webhook`
+Your webhook URL is: `https://ai-receptionist-whatsapp-bot.vercel.app/webhook`
 
 Add all `.env` variables to Vercel: `vercel env add VARIABLE_NAME`
 
@@ -124,7 +124,7 @@ Now text the Twilio sandbox number from your phone. The bot replies.
 
 ## Onboarding a new client (production)
 
-1. Create a new row in `spa_configs` with the client's config (copy `glow-spa-config.js` structure, fill real data)
+1. Create a new row in `spa_configs` with the client's config (copy `example-spa-spa-config.js` structure, fill real data)
 2. Set `SPA_ID` env var on Vercel to the new spa's ID
 3. Connect their booking system (Boulevard/Vagaro: add OAuth credentials to `.env`)
 4. Run the handoff email test to confirm alerts reach the right inbox

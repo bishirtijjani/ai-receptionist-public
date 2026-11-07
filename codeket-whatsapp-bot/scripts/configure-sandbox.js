@@ -8,7 +8,7 @@ import twilio from 'twilio';
 config();
 
 const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-const WEBHOOK_URL = 'https://codeket-whatsapp-bot.vercel.app/webhook';
+const WEBHOOK_URL = 'https://ai-receptionist-whatsapp-bot.vercel.app/webhook';
 
 async function configureSandbox() {
   console.log('Configuring Twilio WhatsApp sandbox...');

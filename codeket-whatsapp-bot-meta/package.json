@@ -1,7 +1,7 @@
 {
-  "name": "codeket-whatsapp-bot-meta",
+  "name": "ai-receptionist-whatsapp-bot-meta",
   "version": "1.0.0",
-  "description": "Codeket's own WhatsApp AI receptionist demo bot — WhatsApp Cloud API (Meta) transport.",
+  "description": "AI Receptionist's own WhatsApp AI receptionist demo bot — WhatsApp Cloud API (Meta) transport.",
   "type": "module",
   "engines": { "node": ">=18" },
   "scripts": {

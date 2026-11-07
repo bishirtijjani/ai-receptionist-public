@@ -1,5 +1,5 @@
-# Codeket Prospect List Playbook
-**File:** `codeket-prospect-list-v2.xlsx`  
+# AI Receptionist Prospect List Playbook
+**File:** `ai-receptionist-prospect-list-v2.xlsx`  
 **Current count:** 162 rows (64 original + 48 Miami + 50 Dallas)  
 **Next city to add:** TBD — suggested: Houston, Austin, or Atlanta
 
@@ -104,7 +104,7 @@ The script automatically:
 - Scores each row A/B/C
 - Writes a personalized `Hook` line for each spa
 - Colors rows green (A), yellow (B), red (C)
-- Saves back to `codeket-prospect-list-v2.xlsx`
+- Saves back to `ai-receptionist-prospect-list-v2.xlsx`
 
 ---
 

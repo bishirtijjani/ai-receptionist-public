@@ -2,20 +2,20 @@
 _Last updated: 2026-07-08_
 
 ## Today — 30 minutes
-- [x] @iambishir bio → "Founder @codekethq / Your med spa's AI receptionist — replies in seconds, books while you sleep / 👇 Watch it work (30 sec)" (DONE 07-08)
-- [ ] @codekethq bio (from phone, 5 min): "AI Receptionist for Med Spas 🩺 Replies in seconds, books 24/7 ⚡ Built by @iambishir 👇 See it live" + codeket.com/ai-receptionist link
-- [ ] Archive the "software projects fail" post on @codekethq
-- [ ] @iambishir follows @codekethq and vice versa
+- [x] @iambishir bio → "Founder @ai-receptionisthq / Your med spa's AI receptionist — replies in seconds, books while you sleep / 👇 Watch it work (30 sec)" (DONE 07-08)
+- [ ] @ai-receptionisthq bio (from phone, 5 min): "AI Receptionist for Med Spas 🩺 Replies in seconds, books 24/7 ⚡ Built by @iambishir 👇 See it live" + ai-receptionist.com/ai-receptionist link
+- [ ] Archive the "software projects fail" post on @ai-receptionisthq
+- [ ] @iambishir follows @ai-receptionisthq and vice versa
 
 ## This week — content (only you can shoot)
-- [ ] **30-sec demo reel** — AI answering a DM + booking. IG-style chat, NOT WhatsApp. Post on @iambishir, PIN it, repost to @codekethq, save as "Demo 👀" highlight. ← PRIORITY #1, everything hangs off this
+- [ ] **30-sec demo reel** — AI answering a DM + booking. IG-style chat, NOT WhatsApp. Post on @iambishir, PIN it, repost to @ai-receptionisthq, save as "Demo 👀" highlight. ← PRIORITY #1, everything hangs off this
 - [ ] Face-to-camera 30–60 sec: "Med spas lose bookings every night after close, so I built this"
 - [ ] Stat graphic: missed after-hours DMs = lost revenue
 - [ ] Screenshot post of a real AI-handled conversation
-- Target: 5–6 posts on @iambishir, 3+ on @codekethq
+- Target: 5–6 posts on @iambishir, 3+ on @ai-receptionisthq
 
 ## Daily warm-up — days 1–10
-- [x] Day 1: followed 9 FL spas (Miami Lakes, St. Pete Aesthetics, Sebella, Bijoux, Hydro, Coco, Alera, glowU, Celine) (DONE 07-08)
+- [x] Day 1: followed 9 FL spas (Miami Lakes, St. Pete Aesthetics, Sebella, Bijoux, Hydro, Coco, Alera, example-spaU, Celine) (DONE 07-08)
 - [ ] Follow 5–10 spas/day from florida-medspa-prospects.csv + like/comment 3–5 posts (Claude can run the batch daily)
 - [ ] Story every 1–2 days
 
@@ -37,6 +37,6 @@ _Last updated: 2026-07-08_
 - [ ] Lean into the coincidence: demo shows the same "anything Saturday?" bait question — use it in conversation ("that question in the demo? It's what I sent you 😄")
 
 ## Key intel from profile audit (07-08)
-- Owner suspicion path: DM → tap @iambishir (passes) → tap @codekethq (currently FAILS: 1 post, 2 followers, no bio) → landing page (strong)
+- Owner suspicion path: DM → tap @iambishir (passes) → tap @ai-receptionisthq (currently FAILS: 1 post, 2 followers, no bio) → landing page (strong)
 - Landing page is the best asset: "built for Med Spas", live booking mockup, pricing, case studies
 - 450-row prospect list: florida-medspa-prospects.csv

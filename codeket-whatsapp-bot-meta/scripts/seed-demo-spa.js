@@ -1,5 +1,5 @@
 /**
- * Seeds the Glow Aesthetic Spa demo config into PostgreSQL.
+ * Seeds the Example Spa demo config into PostgreSQL.
  * Run once after creating the schema:
  *
  *   node db/schema.sql   (via psql)
@@ -10,7 +10,7 @@
 
 import "dotenv/config";
 import pg from "pg";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 
@@ -24,9 +24,9 @@ async function seed() {
              config = excluded.config,
              active = true,
              updated_at = now()`,
-      [glowSpaConfig.id, glowSpaConfig.name, JSON.stringify(glowSpaConfig)]
+      [example-spaSpaConfig.id, example-spaSpaConfig.name, JSON.stringify(example-spaSpaConfig)]
     );
-    console.log(`Seeded spa config: ${glowSpaConfig.name} (id: ${glowSpaConfig.id})`);
+    console.log(`Seeded spa config: ${example-spaSpaConfig.name} (id: ${example-spaSpaConfig.id})`);
   } catch (err) {
     console.error("Seed failed:", err.message);
     process.exitCode = 1;

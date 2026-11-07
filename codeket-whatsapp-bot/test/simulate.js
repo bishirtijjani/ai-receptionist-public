@@ -10,14 +10,14 @@
 import readline from "readline";
 import { config } from "dotenv";
 import { getReply } from "../lib/anthropic.js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 config();
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 const history = [];
 
-console.log("\n── Glow Aesthetic Spa — WhatsApp Bot Simulator ──");
+console.log("\n── Example Spa — WhatsApp Bot Simulator ──");
 console.log("Type customer messages below. Type 'exit' to quit.\n");
 
 function ask() {
@@ -29,7 +29,7 @@ function ask() {
     if (!input.trim()) return ask();
 
     try {
-      const { reply, handoff } = await getReply(glowSpaConfig, history, input);
+      const { reply, handoff } = await getReply(example-spaSpaConfig, history, input);
 
       history.push({ role: "user", content: input });
       history.push({ role: "assistant", content: reply });

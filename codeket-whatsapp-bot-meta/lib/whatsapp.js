@@ -1,7 +1,7 @@
 /**
  * WhatsApp Cloud API transport (Meta Graph API).
  *
- * Replaces the Twilio transport for Codeket's own demo bot.
+ * Replaces the Twilio transport for AI Receptionist's own demo bot.
  * Uses native fetch (Node 18+) — no SDK dependency.
  *
  * Three jobs:

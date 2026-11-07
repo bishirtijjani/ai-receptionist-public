@@ -1,10 +1,10 @@
-# Setup Guide — Codeket Demo Bot on WhatsApp Cloud API (Meta)
+# Setup Guide — AI Receptionist Demo Bot on WhatsApp Cloud API (Meta)
 
-This is the setup for **Codeket's own demo bot** (Glow Aesthetic Spa), running on Meta's
+This is the setup for **AI Receptionist's own demo bot** (Example Spa), running on Meta's
 WhatsApp Cloud API with a **real registered number**. Service replies are free, and you can
 swap/add numbers under one WhatsApp Business Account.
 
-> The Twilio bot in `../codeket-whatsapp-bot` is unchanged. Keep it for **paid client** deploys.
+> The Twilio bot in `../ai-receptionist-whatsapp-bot` is unchanged. Keep it for **paid client** deploys.
 > This Meta variant is for **your demo number only**.
 
 ---
@@ -21,7 +21,7 @@ swap/add numbers under one WhatsApp Business Account.
 
 **Your pre-generated verify token (use this everywhere):**
 ```
-codeket_verify_6fd7674031b253dff2ba391306eea310
+ai-receptionist_verify_6fd7674031b253dff2ba391306eea310
 ```
 
 ---
@@ -40,7 +40,7 @@ codeket_verify_6fd7674031b253dff2ba391306eea310
 ## Step 1 — Create the Meta app
 
 1. Go to **developers.facebook.com** > **My Apps** > **Create App**.
-2. Use case: **Other** > Type: **Business** > name it `Codeket Demo Bot`.
+2. Use case: **Other** > Type: **Business** > name it `AI Receptionist Demo Bot`.
 3. Link it to your Business Portfolio.
 4. On the app dashboard, find **WhatsApp** and click **Set up**.
 
@@ -60,7 +60,7 @@ The token shown on API Setup is **temporary (24h)** — fine for a first test, u
 production. Make a permanent one:
 
 1. **business.facebook.com** > **Business Settings** > **Users** > **System Users**.
-2. **Add** a system user: name `codeket-bot`, role **Admin**.
+2. **Add** a system user: name `ai-receptionist-bot`, role **Admin**.
 3. Select it > **Assign assets** > pick your app > grant **Full control**. Also assign the
    **WhatsApp Account** asset with full control.
 4. Click **Generate new token** > select your app > set expiration **Never** >
@@ -81,7 +81,7 @@ production. Make a permanent one:
    ```bash
    psql "$DATABASE_URL" -f db/schema.sql
    npm install
-   npm run seed          # seeds the "glow" spa row
+   npm run seed          # seeds the "example-spa" spa row
    ```
 3. Start the server (sets `NODE_ENV=production` so signatures are enforced):
    ```bash
@@ -93,14 +93,14 @@ production. Make a permanent one:
 
 1. App > **WhatsApp** > **Configuration** > **Webhook** > **Edit**.
 2. **Callback URL:** `https://<your-domain>/webhook`
-3. **Verify token:** `codeket_verify_6fd7674031b253dff2ba391306eea310`
+3. **Verify token:** `ai-receptionist_verify_6fd7674031b253dff2ba391306eea310`
 4. Click **Verify and save**. (Meta sends a GET to your webhook; the bot answers the challenge.)
 5. Under **Webhook fields**, **Subscribe** to **`messages`**.
 
 ## Step 7 — Test
 
 1. From your phone, send a WhatsApp message **to your registered business number**.
-2. The bot should reply within a couple seconds as the Glow Aesthetic Spa receptionist.
+2. The bot should reply within a couple seconds as the Example Spa receptionist.
 3. No reply? Check the server logs (`docker compose logs -f ai-receptionist`, or the
    `npm start` terminal).
 

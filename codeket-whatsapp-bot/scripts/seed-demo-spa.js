@@ -1,5 +1,5 @@
 /**
- * Seeds the Glow Aesthetic Spa demo config into Supabase.
+ * Seeds the Example Spa demo config into Supabase.
  * Run once after creating the schema:
  *
  *   node scripts/seed-demo-spa.js
@@ -8,7 +8,7 @@
  */
 
 import { createClient } from "@supabase/supabase-js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 import { config } from "dotenv";
 
 config(); // load .env
@@ -23,9 +23,9 @@ async function seed() {
     .from("spa_configs")
     .upsert(
       {
-        id: glowSpaConfig.id,
-        name: glowSpaConfig.name,
-        config: glowSpaConfig,
+        id: example-spaSpaConfig.id,
+        name: example-spaSpaConfig.name,
+        config: example-spaSpaConfig,
         active: true,
       },
       { onConflict: "id" }
@@ -36,7 +36,7 @@ async function seed() {
     process.exit(1);
   }
 
-  console.log(`Seeded spa config: ${glowSpaConfig.name} (id: ${glowSpaConfig.id})`);
+  console.log(`Seeded spa config: ${example-spaSpaConfig.name} (id: ${example-spaSpaConfig.id})`);
 }
 
 seed();

@@ -1,5 +1,5 @@
 /**
- * Standalone Node HTTP server for the Codeket WhatsApp AI receptionist.
+ * Standalone Node HTTP server for the AI Receptionist WhatsApp AI receptionist.
  *
  * Replaces the Vercel serverless runtime with a real, long-running server.
  * The webhook handlers in api/ are unchanged and mounted directly as routes

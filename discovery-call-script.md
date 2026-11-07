@@ -25,7 +25,7 @@ NOT acceptable:
 ### 0:00 - 1:30 / Opening
 
 Say:
-> Hi [Name], good to meet you. Quick before we dive in, I'm Bishir, founder of Codeket. I build AI receptionists specifically for med spas. This call is 15 minutes. I want to learn how you handle inquiries today, show you what we built, and see if it's a fit. Sound good?
+> Hi [Name], good to meet you. Quick before we dive in, I'm Bishir, founder of AI Receptionist. I build AI receptionists specifically for med spas. This call is 15 minutes. I want to learn how you handle inquiries today, show you what we built, and see if it's a fit. Sound good?
 
 Wait for yes. Move on.
 
@@ -124,7 +124,7 @@ Log them as `revisit` in your CRM.
 | I want to start small | The Pilot IS the small version. One spa, 14-day delivery, 14-day money-back. Nothing smaller actually delivers value. |
 | I need to talk to my partner | Of course. Want me to send a one-page summary you can forward? Happy to hop on a 10-min call with both of you this week. |
 | What if my customers don't use WhatsApp? | WhatsApp Business gets 95%+ open rates and most med spa clients already use it for booking. If your customer base is mostly DM-on-Instagram or SMS, we can route those channels into the same bot. |
-| Where are you based? | Codeket's HQ is in Nigeria. I run client hours during your business day and bill in USD via Wise / Grey. You talk to me directly, not a sales team. |
+| Where are you based? | AI Receptionist's HQ is in Nigeria. I run client hours during your business day and bill in USD via Wise / Grey. You talk to me directly, not a sales team. |
 
 ## What NOT to say
 

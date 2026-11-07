@@ -30,7 +30,7 @@ export function query(text, params) {
 
 /**
  * Load a spa config by ID.
- * The caller (webhook) uses the bundled demo config when SPA_ID === "glow",
+ * The caller (webhook) uses the bundled demo config when SPA_ID === "example-spa",
  * so this lookup only runs for real client IDs.
  */
 export async function getSpaConfig(spaId) {

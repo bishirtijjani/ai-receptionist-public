@@ -35,8 +35,8 @@ If after-hours inquiries are eating you alive, I have a 90-second Loom showing i
 Either way, glad to be following [Spa Name]'s work.
 
 Bishir
-Founder, Codeket
-codeket.com/whatsapp-receptionist
+Founder, AI Receptionist
+ai-receptionist.com/whatsapp-receptionist
 ```
 
 **Follow-up email 1 (Day 4 if no reply):**
@@ -115,7 +115,7 @@ Following up. If after-hours DMs aren't a pain, no worries. If they are, here's 
 - Don't use em-dashes (Claude/AI tell). Use commas, periods, parentheses.
 - Don't send identical openers to multiple prospects (rotate the [specific thing])
 - Don't pitch the price in the first message (lower the friction, offer the Loom)
-- Don't link to codeket.com homepage. Link to codeket.com/whatsapp-receptionist
+- Don't link to ai-receptionist.com homepage. Link to ai-receptionist.com/whatsapp-receptionist
 - Don't ask for a call in the first message. Offer a Loom (lower friction)
 - Don't follow up more than 3 times per channel. Let it die.
 - Don't send LinkedIn DMs via automation (account ban risk; LinkedIn detects it). Manual only.

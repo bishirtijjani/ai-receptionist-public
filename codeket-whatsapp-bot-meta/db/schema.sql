@@ -1,5 +1,5 @@
 -- ─────────────────────────────────────────────────────────────
--- Codeket WhatsApp Bot — PostgreSQL schema (self-hosted)
+-- AI Receptionist WhatsApp Bot — PostgreSQL schema (self-hosted)
 -- Run once against the target database, e.g.:
 --   psql "postgresql://user:pass@host:5432/ai_receptionist" -f db/schema.sql
 --
@@ -10,7 +10,7 @@
 
 -- Spa configurations (one row per client spa)
 create table if not exists spa_configs (
-  id          text primary key,                -- e.g. "glow", "luxe-austin"
+  id          text primary key,                -- e.g. "example-spa", "luxe-austin"
   name        text not null,
   config      jsonb not null,                  -- full spa config object
   active      boolean not null default true,

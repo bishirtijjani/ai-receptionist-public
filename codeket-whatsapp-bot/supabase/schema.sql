@@ -1,11 +1,11 @@
 -- ─────────────────────────────────────────────────────────────
--- Codeket WhatsApp Bot — Supabase Schema
+-- AI Receptionist WhatsApp Bot — Supabase Schema
 -- Run this in the Supabase SQL editor to initialise the database.
 -- ─────────────────────────────────────────────────────────────
 
 -- Spa configurations (one row per client spa)
 create table if not exists spa_configs (
-  id          text primary key,                -- e.g. "glow", "luxe-austin"
+  id          text primary key,                -- e.g. "example-spa", "luxe-austin"
   name        text not null,
   config      jsonb not null,                  -- full spa config object
   active      boolean not null default true,
@@ -67,5 +67,5 @@ create table if not exists bookings (
 -- ─── Seed demo spa ───────────────────────────────────────────────
 -- After running this schema, also run:
 --   node scripts/seed-demo-spa.js
--- to insert the Glow Aesthetic Spa config.
+-- to insert the Example Spa config.
 -- ─────────────────────────────────────────────────────────────────

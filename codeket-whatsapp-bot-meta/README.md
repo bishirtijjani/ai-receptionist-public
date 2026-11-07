@@ -1,11 +1,11 @@
-# Codeket WhatsApp AI Receptionist
+# AI Receptionist WhatsApp AI Receptionist
 
 WhatsApp bot for med spas. Answers inquiries, books appointments, hands off to humans when needed.
 
 **Stack:** Claude Haiku 4.5 + PostgreSQL + Node/Express + **WhatsApp Cloud API (Meta)**
 
-> This is Codeket's **own demo bot** (Meta Cloud API transport). The Twilio version lives in
-> `../codeket-whatsapp-bot` and is used for paid client deploys. **Full setup: see `SETUP-META.md`.**
+> This is AI Receptionist's **own demo bot** (Meta Cloud API transport). The Twilio version lives in
+> `../ai-receptionist-whatsapp-bot` and is used for paid client deploys. **Full setup: see `SETUP-META.md`.**
 >
 > Self-hosted: the Vercel serverless runtime and Supabase have been replaced by a
 > standalone Node server (`server.js`) and the shared PostgreSQL container.
@@ -32,12 +32,12 @@ admin/
   index.html            — Monitoring dashboard UI (Basic Auth protected)
   app.js / style.css    — Dashboard frontend (vanilla JS, no build step)
 demo/
-  glow-spa-config.js    — Demo spa config (Glow Aesthetic Spa, Austin TX)
+  example-spa-spa-config.js    — Demo spa config (Example Spa, Austin TX)
 db/
   schema.sql            — DB schema (run once with psql, fresh installs)
   migrations/           — Idempotent ALTERs for existing databases
 scripts/
-  seed-demo-spa.js      — Seeds the Glow Aesthetic Spa config
+  seed-demo-spa.js      — Seeds the Example Spa config
 test/
   simulate.js           — Terminal chat simulator (no WhatsApp needed)
 ```
@@ -49,7 +49,7 @@ test/
 ### 1. Install
 
 ```bash
-cd codeket-whatsapp-bot-meta
+cd ai-receptionist-whatsapp-bot-meta
 npm install
 ```
 
@@ -71,7 +71,7 @@ cp .env.example .env
 | `IG_*` | Instagram DM channel (IG app + `instagram_manage_messages`) |
 | `HANDOFF_EMAIL_TO` | Your email (alerts go here) |
 | `SMTP_*` | Any SMTP. Gmail: enable App Passwords, use `smtp.gmail.com:587` |
-| `SPA_ID` | `glow` for demo, or the spa's ID in `spa_configs` |
+| `SPA_ID` | `example-spa` for demo, or the spa's ID in `spa_configs` |
 | `ADMIN_USER` / `ADMIN_PASSWORD` | Login for the `/admin` monitoring dashboard |
 
 ### 3. Create the schema
@@ -114,8 +114,8 @@ over `shared_net`). On the VPS the app lives at `/opt/docker/apps/ai-receptionis
 auto-deploys from GitHub via the webhook system. See the server README for the runbook.
 
 Webhook URLs:
-- WhatsApp: `https://ai-receptionist.codeket.com/webhook`
-- Instagram: `https://ai-receptionist.codeket.com/instagram-webhook`
+- WhatsApp: `https://ai-receptionist.ai-receptionist.com/webhook`
+- Instagram: `https://ai-receptionist.ai-receptionist.com/instagram-webhook`
 
 ---
 
@@ -157,7 +157,7 @@ automatically.
 
 ## Onboarding a new client (production)
 
-1. Insert a new row in `spa_configs` with the client's config (copy `glow-spa-config.js` structure)
+1. Insert a new row in `spa_configs` with the client's config (copy `example-spa-spa-config.js` structure)
 2. Set `SPA_ID` to the new spa's ID
 3. Connect their booking system (Boulevard/Vagaro: add OAuth credentials to `.env`)
 4. Run the handoff email test to confirm alerts reach the right inbox

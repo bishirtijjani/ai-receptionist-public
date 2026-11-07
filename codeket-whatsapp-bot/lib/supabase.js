@@ -9,7 +9,7 @@ const supabase = createClient(
 
 /**
  * Load a spa config by ID from Supabase.
- * Falls back to the local demo config if SPA_ID is "glow" and we're in dev.
+ * Falls back to the local demo config if SPA_ID is "example-spa" and we're in dev.
  */
 export async function getSpaConfig(spaId) {
   const { data, error } = await supabase

@@ -1,7 +1,7 @@
-# Codeket WhatsApp AI Receptionist — Complete Build & Deployment Log
+# AI Receptionist WhatsApp AI Receptionist — Complete Build & Deployment Log
 
-**Product:** Codeket WhatsApp AI Receptionist for Med Spas  
-**Demo Spa:** Glow Aesthetic Spa (Austin, TX)  
+**Product:** AI Receptionist WhatsApp AI Receptionist for Med Spas  
+**Demo Spa:** Example Spa (Austin, TX)  
 **Stack:** Node.js · Vercel Serverless · Supabase (Postgres) · Twilio · Anthropic Claude Haiku  
 **Status:** ✅ Live and working on WhatsApp
 
@@ -21,7 +21,7 @@ A WhatsApp AI receptionist that handles inbound customer messages for a med spa.
 |---|------|--------|
 | 1 | Project scaffolded (Node.js, ES Modules, Vercel) | ✅ Done |
 | 2 | Supabase schema created (5 tables) | ✅ Done |
-| 3 | Demo spa config built (Glow Aesthetic Spa) | ✅ Done |
+| 3 | Demo spa config built (Example Spa) | ✅ Done |
 | 4 | Claude Haiku integration with handoff signal parsing | ✅ Done |
 | 5 | System prompt with dynamic spa context injection | ✅ Done |
 | 6 | Supabase conversation state (get/create, history) | ✅ Done |
@@ -80,7 +80,7 @@ Before starting, you need accounts and API keys for:
 ## Project Structure
 
 ```
-codeket-whatsapp-bot/
+ai-receptionist-whatsapp-bot/
 ├── api/
 │   └── webhook.js           # Vercel serverless function (entry point)
 ├── lib/
@@ -90,7 +90,7 @@ codeket-whatsapp-bot/
 │   ├── handoff.js           # Handoff email via nodemailer
 │   └── system-prompt.js     # Builds Claude's system prompt from spa config
 ├── demo/
-│   └── glow-spa-config.js   # Bundled demo spa config (no DB lookup needed)
+│   └── example-spa-spa-config.js   # Bundled demo spa config (no DB lookup needed)
 ├── scripts/
 │   └── seed-demo-spa.js     # Seeds the demo spa row into Supabase
 ├── .env                     # Local credentials (never commit)
@@ -104,7 +104,7 @@ codeket-whatsapp-bot/
 
 ```bash
 git clone <your-repo>
-cd codeket-whatsapp-bot
+cd ai-receptionist-whatsapp-bot
 npm install
 ```
 
@@ -112,7 +112,7 @@ npm install
 
 ```json
 {
-  "name": "codeket-whatsapp-bot",
+  "name": "ai-receptionist-whatsapp-bot",
   "version": "1.0.0",
   "type": "module",
   "engines": { "node": ">=18" },
@@ -255,7 +255,7 @@ SMTP_USER=FILL_IN
 SMTP_PASS=FILL_IN
 
 # ─── Demo mode ───────────────────────────────────────────────────
-SPA_ID=glow
+SPA_ID=example-spa
 NODE_ENV=development
 ```
 
@@ -263,7 +263,7 @@ NODE_ENV=development
 
 ## Step 6: Seed the Demo Spa into Supabase
 
-The `conversations` table has a foreign key to `spa_configs`. If you try to create a conversation for spa `"glow"` before that row exists, you'll get:
+The `conversations` table has a foreign key to `spa_configs`. If you try to create a conversation for spa `"example-spa"` before that row exists, you'll get:
 
 ```
 insert or update on table "conversations" violates foreign key constraint "conversations_spa_id_fkey"
@@ -275,17 +275,17 @@ Fix: run the seed script once:
 node scripts/seed-demo-spa.js
 ```
 
-This inserts the `glow` row (or upserts it if it already exists). You should see:
+This inserts the `example-spa` row (or upserts it if it already exists). You should see:
 
 ```
-Seeded spa config: Glow Aesthetic Spa (id: glow)
+Seeded spa config: Example Spa (id: example-spa)
 ```
 
 **`scripts/seed-demo-spa.js`:**
 
 ```js
 import { createClient } from "@supabase/supabase-js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 import { config } from "dotenv";
 
 config(); // load .env
@@ -300,9 +300,9 @@ async function seed() {
     .from("spa_configs")
     .upsert(
       {
-        id: glowSpaConfig.id,
-        name: glowSpaConfig.name,
-        config: glowSpaConfig,
+        id: example-spaSpaConfig.id,
+        name: example-spaSpaConfig.name,
+        config: example-spaSpaConfig,
         active: true,
       },
       { onConflict: "id" }
@@ -313,7 +313,7 @@ async function seed() {
     process.exit(1);
   }
 
-  console.log(`Seeded spa config: ${glowSpaConfig.name} (id: ${glowSpaConfig.id})`);
+  console.log(`Seeded spa config: ${example-spaSpaConfig.name} (id: ${example-spaSpaConfig.id})`);
 }
 
 seed();
@@ -349,16 +349,16 @@ vercel --prod
 ```
 
 Vercel will output your deployment URL, e.g.:  
-`https://codeket-whatsapp-bot.vercel.app`
+`https://ai-receptionist-whatsapp-bot.vercel.app`
 
-Your webhook endpoint is: `https://codeket-whatsapp-bot.vercel.app/api/webhook`
+Your webhook endpoint is: `https://ai-receptionist-whatsapp-bot.vercel.app/api/webhook`
 
 ### 7d. Configure Twilio Webhook
 
 In the Twilio console:
 1. Go to **Messaging → Settings → WhatsApp Sandbox Settings**
 2. Set **"When a message comes in"** to your webhook URL:  
-   `https://codeket-whatsapp-bot.vercel.app/api/webhook`
+   `https://ai-receptionist-whatsapp-bot.vercel.app/api/webhook`
 3. Method: `HTTP POST`
 4. Save
 
@@ -397,7 +397,7 @@ export default async function handler(req, res) {
   const { from, body: customerMessage } = parseTwilioWebhook(rawBody);
 
   // 2. Load spa config (bundled for demo, from Supabase for real clients)
-  const spaConfig = spaId === "glow" ? glowSpaConfig : await getSpaConfig(spaId);
+  const spaConfig = spaId === "example-spa" ? example-spaSpaConfig : await getSpaConfig(spaId);
 
   // 3. Get or create conversation row in Supabase
   const conversation = await getOrCreateConversation(spaId, normalizePhone(from));
@@ -484,9 +484,9 @@ Email is best-effort — a failure logs to console but does not crash the webhoo
 
 ---
 
-### `demo/glow-spa-config.js` — Demo spa config
+### `demo/example-spa-spa-config.js` — Demo spa config
 
-A complete, hardcoded spa config for "Glow Aesthetic Spa" used for demos. Includes all 9 services with exact pricing, team members, hours, and policies. In production, each real client's config lives in the `spa_configs` Supabase table and is loaded dynamically.
+A complete, hardcoded spa config for "Example Spa" used for demos. Includes all 9 services with exact pricing, team members, hours, and policies. In production, each real client's config lives in the `spa_configs` Supabase table and is loaded dynamically.
 
 ---
 
@@ -499,7 +499,7 @@ A complete, hardcoded spa config for "Glow Aesthetic Spa" used for demos. Includ
 insert or update on table "conversations" violates foreign key constraint "conversations_spa_id_fkey"
 ```
 
-**Cause:** The `conversations` table references `spa_configs(id)`, but the `glow` row had never been inserted into `spa_configs`.
+**Cause:** The `conversations` table references `spa_configs(id)`, but the `example-spa` row had never been inserted into `spa_configs`.
 
 **Fix:** Run `node scripts/seed-demo-spa.js` once to insert the demo spa row.
 
@@ -573,7 +573,7 @@ From live WhatsApp testing, the bot correctly handles:
 
 - **Booking inquiries** — greets warmly, asks what service, guides toward booking
 - **Pricing questions** — lists all services with exact prices (no hallucination)
-- **Self-identification** — "I'm the AI assistant for Glow Aesthetic Spa..."
+- **Self-identification** — "I'm the AI assistant for Example Spa..."
 - **Human handoff** — detects when customer demands a person, emits HANDOFF signal, sends clean reply ("Someone will be in touch shortly on this WhatsApp")
 - **Multi-turn conversations** — maintains context across the full conversation via Supabase message history
 - **Personality** — matches customer energy, no corporate filler phrases
@@ -631,4 +631,4 @@ When you sign a real client:
 
 ---
 
-*Built by Codeket. This document covers everything from a blank terminal to a live, working WhatsApp AI receptionist.*
+*Built by AI Receptionist. This document covers everything from a blank terminal to a live, working WhatsApp AI receptionist.*

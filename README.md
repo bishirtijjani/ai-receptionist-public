@@ -1,4 +1,4 @@
-# Codeket — WhatsApp AI Receptionist for Med Spas
+# AI Receptionist — WhatsApp AI Receptionist for Med Spas
 
 Always-on WhatsApp/Instagram receptionist for med spas. Answers service and
 price questions, proposes booking slots, collects intake info, and hands off to
@@ -7,16 +7,16 @@ per client with hard-locked prices so the bot can't invent information.
 
 **Stack:** Claude (Anthropic) + PostgreSQL + Node/Express + WhatsApp transport
 
-> `codeket-whatsapp-bot-meta` is **self-hosted** (standalone Node server + PostgreSQL).
-> `codeket-whatsapp-bot` (Twilio) still uses the original Vercel + Supabase setup.
+> `ai-receptionist-whatsapp-bot-meta` is **self-hosted** (standalone Node server + PostgreSQL).
+> `ai-receptionist-whatsapp-bot` (Twilio) still uses the original Vercel + Supabase setup.
 
 ---
 
 ## Repository layout
 
 ```
-codeket-whatsapp-bot/        Twilio WhatsApp transport — used for paid client deploys
-codeket-whatsapp-bot-meta/   WhatsApp Cloud API (Meta) transport — Codeket's own demo bot
+ai-receptionist-whatsapp-bot/        Twilio WhatsApp transport — used for paid client deploys
+ai-receptionist-whatsapp-bot-meta/   WhatsApp Cloud API (Meta) transport — AI Receptionist's own demo bot
 .agents/product-marketing.md Positioning, ICP, personas, objections, brand voice
 ```
 
@@ -25,10 +25,10 @@ scripting, and campaign planning.
 
 ### Which bot do I use?
 
-| | `codeket-whatsapp-bot` | `codeket-whatsapp-bot-meta` |
+| | `ai-receptionist-whatsapp-bot` | `ai-receptionist-whatsapp-bot-meta` |
 |---|---|---|
 | Transport | Twilio WhatsApp | Meta WhatsApp Cloud API |
-| Purpose | Paid client deployments | Codeket's own demo |
+| Purpose | Paid client deployments | AI Receptionist's own demo |
 | Runtime | Vercel serverless + Supabase | Self-hosted Node + PostgreSQL |
 | Setup | `README.md` | `SETUP-META.md` |
 
@@ -41,11 +41,11 @@ transport layer.
 ## Quick start (per bot)
 
 ```bash
-cd codeket-whatsapp-bot-meta    # self-hosted variant
+cd ai-receptionist-whatsapp-bot-meta    # self-hosted variant
 npm install
 cp .env.example .env            # fill in real values
 psql "$DATABASE_URL" -f db/schema.sql
-npm run seed                    # seed the Glow Aesthetic Spa demo config
+npm run seed                    # seed the Example Spa demo config
 node test/simulate.js           # terminal chat simulator, no transport needed
 npm start                       # /health, /webhook, /instagram-webhook
 ```

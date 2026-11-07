@@ -1,43 +1,43 @@
-# Codeket WhatsApp Demo Bot (Meta Cloud API) — Full Recreate-From-Scratch Guide
+# AI Receptionist WhatsApp Demo Bot (Meta Cloud API) — Full Recreate-From-Scratch Guide
 
-This document captures **everything** done to build and deploy Codeket's own WhatsApp AI
+This document captures **everything** done to build and deploy AI Receptionist's own WhatsApp AI
 receptionist demo bot on the **Meta WhatsApp Cloud API**, so that anyone (you, me, or a teammate)
 can rebuild it from zero. It includes the code, every manual dashboard step, the exact
 identifiers used, and the real-world snags we hit and how we solved them.
 
 > **Scope note.** This is the **demo** bot (Meta Cloud API transport, free service messaging,
-> number swapping). It lives in `codeket-whatsapp-bot-meta/`. The original **Twilio** bot in
-> `../codeket-whatsapp-bot/` is left untouched and is intended for **paid client** deploys
+> number swapping). It lives in `ai-receptionist-whatsapp-bot-meta/`. The original **Twilio** bot in
+> `../ai-receptionist-whatsapp-bot/` is left untouched and is intended for **paid client** deploys
 > (Twilio is easier for per-client number provisioning). Same brain, two transports.
 
 ---
 
 ## 0. End state (what "done" looks like)
 
-- A Meta app ("Codeket Demo Bot") with the WhatsApp product, a **real registered number**
+- A Meta app ("AI Receptionist Demo Bot") with the WhatsApp product, a **real registered number**
   (+234 912 197 0951, status **Connected**), a **permanent** access token, and the app secret.
 - Bot code deployed to **Vercel** as a serverless function at `/webhook`.
 - Meta webhook pointed at the Vercel URL, verified, and **subscribed to the `messages` field**.
 - A **payment method** on the WhatsApp Business Account (Meta requires one even though
   customer-initiated *service* replies are free).
 - App switched to **Live** so production webhooks are delivered.
-- Texting the number → bot replies as "Glow Aesthetic Spa", with human-handoff email alerts.
+- Texting the number → bot replies as "Example Spa", with human-handoff email alerts.
 
 ### Key identifiers (non-secret) used in this build
 
 | Thing | Value |
 |---|---|
-| Meta App name / ID | `Codeket Demo Bot` / `1176484317944184` |
+| Meta App name / ID | `AI Receptionist Demo Bot` / `1176484317944184` |
 | Business portfolio ID | `708984348720023` |
 | WhatsApp Business Account (WABA) ID — real number | `3013077042367871` |
 | Phone Number ID — real number | `1112015095335390` |
 | Registered display number | `+234 912 197 0951` (wa_id `2349121970951`) |
 | Free test number (auto-provisioned) | `+1 555 635-3698` — Phone Number ID `1224471777407239`, WABA `1002801805481711` |
-| Webhook verify token | `codeket_verify_6fd7674031b253dff2ba391306eea310` |
+| Webhook verify token | `ai-receptionist_verify_6fd7674031b253dff2ba391306eea310` |
 | Graph API version | `v23.0` |
-| Vercel team / project | `bitmo24-gmailcoms-projects` / `codeket-whatsapp-bot-meta` |
-| Production base URL | `https://codeket-whatsapp-bot-meta.vercel.app` |
-| Webhook URL | `https://codeket-whatsapp-bot-meta.vercel.app/webhook` |
+| Vercel team / project | `bitmo24-gmailcoms-projects` / `ai-receptionist-whatsapp-bot-meta` |
+| Production base URL | `https://ai-receptionist-whatsapp-bot-meta.vercel.app` |
+| Webhook URL | `https://ai-receptionist-whatsapp-bot-meta.vercel.app/webhook` |
 
 ### Secrets (NOT stored in this doc — they live in `.env` and Vercel env vars)
 `ANTHROPIC_API_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_APP_SECRET`,
@@ -93,7 +93,7 @@ Anthropic Haiku is ~\$2-5/mo at volume; Supabase/Vercel free tier. ~97% margin a
 ### 3.1 File tree
 
 ```
-codeket-whatsapp-bot-meta/
+ai-receptionist-whatsapp-bot-meta/
 ├── api/
 │   └── webhook.js          # Meta webhook: GET verify + POST message handler   [META-SPECIFIC]
 ├── lib/
@@ -104,9 +104,9 @@ codeket-whatsapp-bot-meta/
 │   ├── handoff.js          # Handoff email via nodemailer            (same as Twilio bot)
 │   └── calendly.js         # Calendly slots/links (coded, NOT wired) (same as Twilio bot)
 ├── demo/
-│   └── glow-spa-config.js  # Demo spa "Glow Aesthetic Spa"           (same as Twilio bot)
+│   └── example-spa-spa-config.js  # Demo spa "Example Spa"           (same as Twilio bot)
 ├── scripts/
-│   └── seed-demo-spa.js    # Seeds the "glow" row into Supabase      (same as Twilio bot)
+│   └── seed-demo-spa.js    # Seeds the "example-spa" row into Supabase      (same as Twilio bot)
 ├── supabase/
 │   └── schema.sql          # 5-table schema                          (same as Twilio bot)
 ├── test/
@@ -127,7 +127,7 @@ Everything in `lib/` except `twilio.js`/`whatsapp.js` is byte-for-byte identical
 ### 3.2 The two Meta-specific source files
 
 Below are the **full** contents of the only two files that differ from the Twilio bot. The
-rest of the code is the shared "brain" and is documented in `../codeket-whatsapp-bot/BUILD_LOG.md`.
+rest of the code is the shared "brain" and is documented in `../ai-receptionist-whatsapp-bot/BUILD_LOG.md`.
 
 #### `lib/whatsapp.js`
 
@@ -135,7 +135,7 @@ rest of the code is the shared "brain" and is documented in `../codeket-whatsapp
 /**
  * WhatsApp Cloud API transport (Meta Graph API).
  *
- * Replaces the Twilio transport for Codeket's own demo bot.
+ * Replaces the Twilio transport for AI Receptionist's own demo bot.
  * Uses native fetch (Node 18+) — no SDK dependency.
  *
  * Three jobs:
@@ -283,8 +283,8 @@ export function normalizePhone(value) {
 /**
  * Vercel serverless function — WhatsApp Cloud API (Meta) webhook.
  *
- * Codeket's OWN demo bot transport. (The Twilio version lives in
- * ../codeket-whatsapp-bot and is unchanged — used for paid client deploys.)
+ * AI Receptionist's OWN demo bot transport. (The Twilio version lives in
+ * ../ai-receptionist-whatsapp-bot and is unchanged — used for paid client deploys.)
  *
  * Meta hits this endpoint two ways:
  *   GET  — one-time subscription handshake. Echo hub.challenge if the token matches.
@@ -319,7 +319,7 @@ import {
   saveMessage,
 } from "../lib/supabase.js";
 import { handleHandoff } from "../lib/handoff.js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 export const config = {
   api: { bodyParser: false }, // raw body needed for X-Hub-Signature-256 validation
@@ -371,8 +371,8 @@ export default async function handler(req, res) {
 
   try {
     // ── Load spa config ─────────────────────────────────────────
-    const spaId = process.env.SPA_ID ?? "glow";
-    const spaConfig = spaId === "glow" ? glowSpaConfig : await getSpaConfig(spaId);
+    const spaId = process.env.SPA_ID ?? "example-spa";
+    const spaConfig = spaId === "example-spa" ? example-spaSpaConfig : await getSpaConfig(spaId);
 
     // ── Conversation state ──────────────────────────────────────
     const conversation = await getOrCreateConversation(spaId, normalizePhone(from));
@@ -443,7 +443,7 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=
 SMTP_PASS=                    # Gmail App Password
-SPA_ID=glow                   # uses the bundled demo config
+SPA_ID=example-spa                   # uses the bundled demo config
 NODE_ENV=development          # locally; Vercel auto-sets production (do NOT add to Vercel)
 ```
 
@@ -453,15 +453,15 @@ NODE_ENV=development          # locally; Vercel auto-sets production (do NOT add
 
 ## 4. Supabase
 
-1. Create a Supabase project (or reuse the Twilio bot's — the schema and the `glow` demo row
+1. Create a Supabase project (or reuse the Twilio bot's — the schema and the `example-spa` demo row
    are identical, so sharing one project is fine).
 2. SQL Editor → paste and run `supabase/schema.sql` (creates 5 tables: `spa_configs`,
    `conversations`, `messages`, `handoffs`, `bookings`).
 3. Collect `SUPABASE_URL` and the **service_role** key (Settings → API) into `.env`.
-4. Seed the demo spa (creates the `glow` row that `conversations` foreign-keys to):
+4. Seed the demo spa (creates the `example-spa` row that `conversations` foreign-keys to):
    ```bash
    npm install
-   npm run seed     # -> "Seeded spa config: Glow Aesthetic Spa (id: glow)"
+   npm run seed     # -> "Seeded spa config: Example Spa (id: example-spa)"
    ```
    Skipping this causes `conversations_spa_id_fkey` foreign-key errors on first message.
 
@@ -474,13 +474,13 @@ NODE_ENV=development          # locally; Vercel auto-sets production (do NOT add
 > browser — deploys come from the CLI or Git.) So run this in your own terminal:
 
 ```bash
-cd codeket-whatsapp-bot-meta
+cd ai-receptionist-whatsapp-bot-meta
 npm install
 npx vercel login      # one-time browser auth
-npx vercel --prod     # accept defaults: project name codeket-whatsapp-bot-meta, dir ./
+npx vercel --prod     # accept defaults: project name ai-receptionist-whatsapp-bot-meta, dir ./
 ```
 
-It prints a production URL + an alias like `https://codeket-whatsapp-bot-meta.vercel.app`.
+It prints a production URL + an alias like `https://ai-receptionist-whatsapp-bot-meta.vercel.app`.
 The webhook endpoint is that base + `/webhook`. The first deploy will run before env vars exist
 (function will error at runtime) — that's expected; add env vars next, then redeploy.
 
@@ -505,14 +505,14 @@ In the Vercel dashboard → Project → **Settings → Environment Variables**:
 ## 7. Meta: app, number, permanent token, app secret
 
 1. **Create the app.** developers.facebook.com → My Apps → Create App → use case **Other** →
-   type **Business** → name `Codeket Demo Bot` → link your business portfolio. Add the
+   type **Business** → name `AI Receptionist Demo Bot` → link your business portfolio. Add the
    **WhatsApp** product.
 2. **Register the real number.** WhatsApp → API Setup → **Add phone number** → display name +
    the real number → verify via the **SMS/voice OTP** (you must read this off the phone — no tool
    can). Record the **Phone Number ID** and **WABA ID**.
    - Confirm status is **Connected** under WhatsApp Manager → Account tools → Phone numbers.
 3. **Permanent access token** (the API-Setup token is only 24h):
-   business.facebook.com → Business Settings → Users → **System Users** → add `codeket-bot`
+   business.facebook.com → Business Settings → Users → **System Users** → add `ai-receptionist-bot`
    (Admin) → **Assign assets**: the app (Full control) + the WhatsApp account (Full control) →
    **Generate new token** → expiration **Never** → scopes `whatsapp_business_messaging` +
    `whatsapp_business_management` → copy into `WHATSAPP_ACCESS_TOKEN`.
@@ -532,7 +532,7 @@ top-level **Webhooks** product instead:
    open, then click the option).
 3. **Callback URL** = `https://<your-vercel-url>/webhook`
    **Verify token** = your `WHATSAPP_VERIFY_TOKEN` (we used
-   `codeket_verify_6fd7674031b253dff2ba391306eea310`).
+   `ai-receptionist_verify_6fd7674031b253dff2ba391306eea310`).
 4. Click **Verify and save**. Meta sends a GET handshake to `/webhook`; our `verifyWebhookChallenge`
    echoes `hub.challenge` when the token matches → verification passes.
 5. In the **Webhook fields** table that appears, toggle **Subscribe** on the **`messages`** row.
@@ -542,7 +542,7 @@ top-level **Webhooks** product instead:
    subscribed to receive events from this app via the `/subscribed_apps` edge. Without this, Meta
    verifies the webhook fine but never sends `messages` POSTs — Vercel logs stay completely empty.
    - Go to the **Graph API Explorer** (developers.facebook.com/tools/explorer/).
-   - Select **Codeket Demo Bot** as the Meta App.
+   - Select **AI Receptionist Demo Bot** as the Meta App.
    - Paste your permanent `WHATSAPP_ACCESS_TOKEN` into the **Access Token** field.
    - Set the path to `<WABA_ID>/subscribed_apps` (e.g. `3013077042367871/subscribed_apps`).
    - First do a **GET** — if `data: []` (empty), it's not subscribed.
@@ -579,7 +579,7 @@ until the app is Live.
 
 1. Top bar of any app page: `App Mode: Development ⚪ Live` → click the **toggle** to **Live**.
 2. If prompted for a **Privacy Policy URL** (Business apps usually require one), App settings →
-   Basic → paste your privacy page URL (e.g. `https://codeket.com/privacy`) → Save → toggle again.
+   Basic → paste your privacy page URL (e.g. `https://ai-receptionist.com/privacy`) → Save → toggle again.
    No App Review is needed just to message your own number.
 
 ---
@@ -587,7 +587,7 @@ until the app is Live.
 ## 11. Test & verify
 
 1. **Offline brain test** (no WhatsApp needed): `npm run test` (or `node test/simulate.js`) →
-   type customer messages, confirm Claude replies as Glow Aesthetic Spa and that a medical
+   type customer messages, confirm Claude replies as Example Spa and that a medical
    question triggers `[HANDOFF TRIGGERED]`.
 2. **Live test:**
    - A freshly Connected number can take ~15-60 min to be reachable from personal WhatsApp; until
@@ -655,7 +655,7 @@ until the app is Live.
   `WHATSAPP_PHONE_NUMBER_ID` at it. No code change.
 - **One number = one WABA = one app.** A number can't serve two apps at once. For a second bot,
   use a second number (a WABA can hold up to ~25 numbers).
-- **Onboarding a real paying client:** prefer the **Twilio** bot in `../codeket-whatsapp-bot/`
+- **Onboarding a real paying client:** prefer the **Twilio** bot in `../ai-receptionist-whatsapp-bot/`
   (easier per-client number provisioning without each client doing Meta business verification).
   Add their spa config to Supabase `spa_configs`, set `SPA_ID`, give them a dedicated number.
 

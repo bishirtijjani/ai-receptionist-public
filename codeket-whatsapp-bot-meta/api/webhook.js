@@ -1,8 +1,8 @@
 /**
  * Vercel serverless function — WhatsApp Cloud API (Meta) webhook.
  *
- * Codeket's OWN demo bot transport. (The Twilio version lives in
- * ../codeket-whatsapp-bot and is unchanged — used for paid client deploys.)
+ * AI Receptionist's OWN demo bot transport. (The Twilio version lives in
+ * ../ai-receptionist-whatsapp-bot and is unchanged — used for paid client deploys.)
  *
  * Meta hits this endpoint two ways:
  *   GET  — one-time subscription handshake. Echo hub.challenge if the token matches.
@@ -38,7 +38,7 @@ import {
   updateConversationIdentity,
 } from "../lib/db.js";
 import { handleHandoff } from "../lib/handoff.js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 export const config = {
   api: { bodyParser: false }, // raw body needed for X-Hub-Signature-256 validation
@@ -90,8 +90,8 @@ export default async function handler(req, res) {
 
   try {
     // ── Load spa config ─────────────────────────────────────────
-    const spaId = process.env.SPA_ID ?? "glow";
-    const spaConfig = spaId === "glow" ? glowSpaConfig : await getSpaConfig(spaId);
+    const spaId = process.env.SPA_ID ?? "example-spa";
+    const spaConfig = spaId === "example-spa" ? example-spaSpaConfig : await getSpaConfig(spaId);
 
     // ── Conversation state ──────────────────────────────────────
     const identity = { display_name: profileName || null };

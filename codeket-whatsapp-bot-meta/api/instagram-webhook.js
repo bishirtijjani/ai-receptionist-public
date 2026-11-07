@@ -32,7 +32,7 @@ import {
   updateConversationIdentity,
 } from "../lib/db.js";
 import { handleHandoff } from "../lib/handoff.js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 export const config = {
   api: { bodyParser: false }, // raw body needed for signature validation
@@ -77,13 +77,13 @@ export default async function handler(req, res) {
   // Ack Meta immediately; process messages without blocking the 200.
   // (Vercel keeps the function alive until the handler returns, so we await
   //  before responding — fine for low volume. For high volume, move to a queue.)
-  const spaId = process.env.SPA_ID ?? "glow";
+  const spaId = process.env.SPA_ID ?? "example-spa";
 
   for (const m of messages) {
     try {
       console.log(`[ig-webhook] ${m.senderId}: ${m.text}`);
 
-      const spaConfig = spaId === "glow" ? glowSpaConfig : await getSpaConfig(spaId);
+      const spaConfig = spaId === "example-spa" ? example-spaSpaConfig : await getSpaConfig(spaId);
 
       const conversation = await getOrCreateConversation(spaId, m.senderId, "instagram");
       const history = await getHistory(conversation.id, 20);

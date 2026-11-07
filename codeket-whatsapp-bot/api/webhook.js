@@ -24,7 +24,7 @@ import {
   saveMessage,
 } from "../lib/supabase.js";
 import { handleHandoff } from "../lib/handoff.js";
-import { glowSpaConfig } from "../demo/glow-spa-config.js";
+import { example-spaSpaConfig } from "../demo/example-spa-spa-config.js";
 
 export const config = {
   api: { bodyParser: false }, // We need the raw body for Twilio signature validation
@@ -68,12 +68,12 @@ export default async function handler(req, res) {
 
   try {
     // ── Load spa config ─────────────────────────────────────────
-    const spaId = process.env.SPA_ID ?? "glow";
+    const spaId = process.env.SPA_ID ?? "example-spa";
     let spaConfig;
 
-    if (spaId === "glow") {
+    if (spaId === "example-spa") {
       // Use bundled demo config for Glow spa (no Supabase lookup needed)
-      spaConfig = glowSpaConfig;
+      spaConfig = example-spaSpaConfig;
     } else {
       spaConfig = await getSpaConfig(spaId);
     }

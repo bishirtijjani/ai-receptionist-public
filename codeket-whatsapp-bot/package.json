@@ -1,7 +1,7 @@
 {
-  "name": "codeket-whatsapp-bot",
+  "name": "ai-receptionist-whatsapp-bot",
   "version": "1.0.0",
-  "description": "WhatsApp AI Receptionist for med spas by Codeket",
+  "description": "WhatsApp AI Receptionist for med spas by AI Receptionist",
   "type": "module",
   "engines": {
     "node": ">=18"

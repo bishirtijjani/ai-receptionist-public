@@ -172,6 +172,6 @@ function getMockSlots(serviceName, preferredDate) {
 
   return {
     slots,
-    bookingUrl: "https://calendly.com/glow-aesthetic-spa/consultation", // demo link
+    bookingUrl: "https://calendly.com/example-spa-aesthetic-spa/consultation", // demo link
   };
 }

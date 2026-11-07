@@ -1,17 +1,17 @@
 /**
- * Demo spa config: Glow Aesthetic Spa
+ * Demo spa config: Example Spa
  * Used for live demos and testing. Mirrors the hero conversation on the landing page.
  * In production, spa configs live in Supabase (spa_configs table).
  */
 
-export const glowSpaConfig = {
-  id: "glow",
-  name: "Glow Aesthetic Spa",
+export const example-spaSpaConfig = {
+  id: "example-spa",
+  name: "Example Spa",
   city: "Austin",
   state: "TX",
   address: "1240 South Congress Ave, Suite 4, Austin, TX 78704",
   phone: "(512) 555-0182",
-  website: "https://glowmedspa.example.com",
+  website: "https://example-spamedspa.example.com",
   hours: {
     monday: "9 AM - 6 PM",
     tuesday: "9 AM - 6 PM",
